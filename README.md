@@ -1,5 +1,5 @@
 # brainfuck
-brainfuck interpreter
+簡単そうなのでつくりました
 
 ## コマンド
 
