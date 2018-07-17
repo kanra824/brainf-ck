@@ -8,9 +8,10 @@ using namespace std;
 void eval ();
 void begin_loop ();
 void end_loop ();
+bool check();
 
 const int MEMORY_SIZE = 256;        // メモリサイズ
-int memory[MEMORY_SIZE];            // メモリ
+char memory[MEMORY_SIZE];            // メモリ
 string program;                     // プログラム
 int memory_pointer = MEMORY_SIZE/2; // メモリポインタ
 int program_pointer = 0;            // プログラムポインタ
@@ -23,18 +24,28 @@ int main () {
     memory[i] = 0;
   }
 
+  bool correct = true;
+
   while(1) {                    // 入力→出力のループ
     program_pointer = 0;        // プログラムポインタを初期化
     out = "";                   // 出力文字列を初期化
     cout << "> ";               // 入力を促す
-    cin >> program;                // declに命令列を入力
+    cin >> program;                // programに命令列を入力
+
+
+    correct = check();                    // programが命令列として正しいか検証
+    loop_depth = 0;
+    
 #ifdef DEBUG
     cout << "memory_pointer: 0" << endl;
 #endif
-    
-    while(program_pointer != program.size()) { // プログラムを評価
-      eval();
-      program_pointer++;
+    if (correct) {
+      while(program_pointer != program.size()) { // プログラムを評価
+        eval();
+        program_pointer++;
+      }
+    } else {
+      cout << "error: Syntax error" << endl;
     }
 #ifdef MEMORY_DEBUG             // メモリのデバッグ出力
     printf("\n%05d: ", - (MEMORY_SIZE / 16));
@@ -110,10 +121,27 @@ void eval () {
   case ']':
     end_loop();
     break;
+
+  case '#':
+    program_pointer++;
+    switch (program[program_pointer]) {
+    case 'r':
+      for(int i=0;i<MEMORY_SIZE;i++) { // メモリ初期化
+        memory[i] = 0;
+      }
+      break;
+    case 'q':
+      cout << "quit" << endl;
+      exit(0);
+      break;
+    default:
+      cout << "directive_error!" << endl;
+      break;
+    }
+    break;
     
   default:
     cout << "error: This is not a decl : " << program_pointer << endl;
-    exit(1);
     break;
   }
     
@@ -163,4 +191,29 @@ void end_loop() {
   } else {
     loop_depth--;
   }
+}
+
+bool check() {
+  bool directive = false;
+  bool correct = true;
+  for(int i=0;i<program.size();i++) {
+    if (loop_depth < 0) {
+      correct = false;
+      break;
+    }
+    if (directive && (program[i] == 'r' || program[i] == 'q')) {
+      directive = false;
+    } else if (directive) {
+      correct = false;
+      break;
+    } else if (program[i] == '#') {
+      directive = true;
+    } else if (program[i] == '[') {
+      loop_depth++;
+    } else if (program[i] == ']') {
+      loop_depth--;
+    }
+  }
+  if (loop_depth != 0) correct = false;
+  return correct;
 }
