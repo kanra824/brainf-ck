@@ -29,7 +29,7 @@ int main () {
   while(1) {                    // 入力→出力のループ
     program_pointer = 0;        // プログラムポインタを初期化
     out = "";                   // 出力文字列を初期化
-    cout << "> ";               // 入力を促す
+    cout << "< ";               // 入力を促す
     cin >> program;                // programに命令列を入力
 
 
