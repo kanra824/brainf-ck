@@ -2,7 +2,8 @@
 brainfuck interpreter
 
 ## コマンド
-### 環境作成
+
+### make
 ```bash
 $ make
 ```
@@ -12,6 +13,11 @@ $ make
 $ ./bf
 ```
 
+### デバッグ出力
+main.cppの
+#define DEBUG
+#define MEMORY_DEBUG
+の有無によってデバッグ出力の有無が決まる。
 ## 文法
 ### >
 ポインタをインクリメント
