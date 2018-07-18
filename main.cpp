@@ -87,21 +87,21 @@ void eval () {
 #endif
     break;
     
-  case '+':                     // ポインタの指す値をインクリメント
+  case '+':                     // メモリポインタの指す値をインクリメント
     memory[memory_pointer]++;
 #ifdef DEBUG
     cout << program_pointer << ": " << memory[memory_pointer] << endl;
 #endif
     break;
     
-  case '-':                     // ポインタの指す値をデクリメント
+  case '-':                     // メモリポインタの指す値をデクリメント
     memory[memory_pointer]--;
 #ifdef DEBUG
     cout << program_pointer << ": " << memory[memory_pointer] << endl;
 #endif
     break;
     
-  case '.':
+  case '.':                     // メモリポインタの指す値を出力
 #ifdef DEBUG
     cout << program_pointer << ": out: ";
     putchar(memory[memory_pointer]);
@@ -110,27 +110,27 @@ void eval () {
     out.push_back(memory[memory_pointer]);
     break;
     
-  case ',':
+  case ',':                     // メモリポインタの指す位置に値を入力
     cin >> memory[memory_pointer];
     break;
     
-  case '[':
+  case '[':                     // メモリポインタの指す値が0なら対応する']'の直後へジャンプする。そうでなければメモリポインタを1増やす。
     begin_loop();
     break;
     
-  case ']':
+  case ']':                     // メモリポインタの指す値が0でないなら対応する'['の直後へジャンプする。そうでなければメモリポインタを1増やす。
     end_loop();
     break;
 
   case '#':
     program_pointer++;
     switch (program[program_pointer]) {
-    case 'r':
-      for(int i=0;i<MEMORY_SIZE;i++) { // メモリ初期化
+    case 'r':                          // '#r'でメモリ初期化
+      for(int i=0;i<MEMORY_SIZE;i++) { 
         memory[i] = 0;
       }
       break;
-    case 'q':
+    case 'q':                   // '#q'でインタプリタを終了する
       cout << "quit" << endl;
       exit(0);
       break;
