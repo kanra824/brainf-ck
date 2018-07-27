@@ -147,7 +147,7 @@ void eval () {
     
 }
 
-void begin_loop() {
+void begin_loop() { //loop開始時の処理 ポインタが指す値が0ならば対応する]までジャンプ
   loop_depth++;
 #ifdef DEBUG
     cout << program_pointer << ": bl" << endl;
@@ -167,7 +167,7 @@ void begin_loop() {
   }
 }
 
-void end_loop() {
+void end_loop() { //loop終了時の処理 ポインタが指す値が0でないならば対応する[の直後までジャンプ
 #ifdef DEBUG
       cout << program_pointer << ": el" << endl;
 #endif                                             
