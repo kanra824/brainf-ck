@@ -1,4 +1,4 @@
-# brainfuck
+# brainf＊ck
 簡単そうなのでつくりました
 
 ## コマンド
